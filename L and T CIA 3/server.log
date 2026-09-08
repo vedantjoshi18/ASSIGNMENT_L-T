@@ -1,0 +1,6 @@
+npm notice run hotel-booking-system@1.0.0 start
+npm notice run node server.js
+◇ injected env (4) from .env // tip: ⌘ enable debugging { debug: true }
+Server running on port 5000
+MongoDB Connected: ac-fin6fwf-shard-00-00.hstis37.mongodb.net
+1. Smoke tests done: register=200, auth missing=401/404 (protected), bad token=401 JSON. Tested at Tue 08 Sep 2026 09:55:59 AM IST
