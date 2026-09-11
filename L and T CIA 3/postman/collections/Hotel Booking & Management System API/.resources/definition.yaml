@@ -1,0 +1,14 @@
+$kind: collection
+description: Postman collection covering all 13 modules, negative test cases (400, 401, 403, 404, 409), and full end-to-end lifecycle for CIA-3 evaluation.
+variables:
+  baseUrl: http://localhost:5000
+  adminToken: ""
+  staffToken: ""
+  guestToken: ""
+  guest2Token: ""
+  hotelId: ""
+  roomTypeId: ""
+  roomId: ""
+  bookingId: ""
+  guestId: ""
+  ruleId: ""

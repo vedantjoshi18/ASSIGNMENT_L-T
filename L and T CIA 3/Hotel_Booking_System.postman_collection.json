@@ -2,94 +2,69 @@
   "info": {
     "_postman_id": "hotel-booking-system-cia3",
     "name": "Hotel Booking & Management System API",
-    "description": "Postman collection covering all 13 modules, negative test cases (400, 401, 403, 404, 409), and full end-to-end lifecycle for CIA-3 evaluation.",
+    "description": "Full API collection for the Hotel Booking System. Run requests in order within each folder. Auth requests auto-save tokens and IDs via test scripts.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:5000",
-      "type": "string"
-    },
-    {
-      "key": "adminToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "staffToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "guestToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "guest2Token",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "hotelId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "roomTypeId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "roomId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "bookingId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "guestId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "ruleId",
-      "value": "",
-      "type": "string"
-    }
+    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "staffToken", "value": "", "type": "string" },
+    { "key": "guestToken", "value": "", "type": "string" },
+    { "key": "guest2Token", "value": "", "type": "string" },
+    { "key": "guestId", "value": "", "type": "string" },
+    { "key": "hotelId", "value": "", "type": "string" },
+    { "key": "roomTypeId", "value": "", "type": "string" },
+    { "key": "roomId", "value": "", "type": "string" },
+    { "key": "bookingId", "value": "", "type": "string" },
+    { "key": "ruleId", "value": "", "type": "string" }
   ],
   "item": [
+    {
+      "name": "0. Health Check",
+      "item": [
+        {
+          "name": "Health Check (200)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    },
     {
       "name": "1. Authentication",
       "item": [
         {
           "name": "Register Admin (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.user) {",
+                  "  pm.collectionVariables.set('guestId', json.data.user._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Admin Manager\",\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"adminPassword123\",\n  \"role\": \"admin\"\n}"
+              "raw": "{\n  \"name\": \"Admin Manager\",\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"admin123\",\n  \"role\": \"admin\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
             }
           }
         },
@@ -97,134 +72,183 @@
           "name": "Register Staff (201)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Front Desk Staff\",\n  \"email\": \"staff@hotel.com\",\n  \"password\": \"staffPassword123\",\n  \"role\": \"staff\"\n}"
+              "raw": "{\n  \"name\": \"Front Desk Staff\",\n  \"email\": \"staff@hotel.com\",\n  \"password\": \"staff123\",\n  \"role\": \"staff\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
             }
           }
         },
         {
-          "name": "Register Guest (201)",
+          "name": "Register Guest 1 (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.user) {",
+                  "  pm.collectionVariables.set('guestId', json.data.user._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"John Guest\",\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"guestPassword123\",\n  \"role\": \"guest\"\n}"
+              "raw": "{\n  \"name\": \"John Guest\",\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"guest123\",\n  \"role\": \"guest\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Guest 2 (201)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Gupta\",\n  \"email\": \"priya@hotel.com\",\n  \"password\": \"priya123\",\n  \"role\": \"guest\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
             }
           }
         },
         {
           "name": "Login Admin (200 - saves adminToken)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('adminToken', json.data.token);",
+                  "  pm.collectionVariables.set('guestId', json.data.user._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"adminPassword123\"\n}"
+              "raw": "{\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"admin123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
             }
           }
         },
         {
           "name": "Login Staff (200 - saves staffToken)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('staffToken', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"staff@hotel.com\",\n  \"password\": \"staffPassword123\"\n}"
+              "raw": "{\n  \"email\": \"staff@hotel.com\",\n  \"password\": \"staff123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
             }
           }
         },
         {
-          "name": "Login Guest (200 - saves guestToken)",
+          "name": "Login Guest 1 (200 - saves guestToken)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('guestToken', json.data.token);",
+                  "  pm.collectionVariables.set('guestId', json.data.user._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"guestPassword123\"\n}"
+              "raw": "{\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"guest123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Guest 2 (200 - saves guest2Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('guest2Token', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya@hotel.com\",\n  \"password\": \"priya123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
             }
           }
         },
@@ -232,53 +256,31 @@
           "name": "Register Duplicate Email (409 Conflict)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Clone\",\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"password123\",\n  \"role\": \"guest\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
             }
           }
         },
         {
-          "name": "Register Validation Failure (400)",
+          "name": "Register Missing Fields (400)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"invalid-email\",\n  \"password\": \"123\"\n}"
+              "raw": "{\n  \"email\": \"invalid-email\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
             }
           }
         },
@@ -286,26 +288,15 @@
           "name": "Login Bad Credentials (401)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"wrongPassword\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
             }
           }
         }
@@ -316,87 +307,34 @@
       "item": [
         {
           "name": "Create Hotel - Admin (201)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data) {",
+                  "  pm.collectionVariables.set('hotelId', json.data._id);",
+                  "}"
+                ]
               }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"The Imperial Grand\",\n  \"city\": \"Bangalore\",\n  \"amenities\": [\n    \"WiFi\",\n    \"Pool\",\n    \"Gym\",\n    \"Restaurant\",\n    \"Spa\"\n  ],\n  \"rating\": 5\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/hotels",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels"
-              ]
             }
-          }
-        },
-        {
-          "name": "Create Hotel - Guest Forbidden (403)",
+          ],
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Guest Hotel\",\n  \"city\": \"Goa\",\n  \"rating\": 4\n}"
+              "raw": "{\n  \"name\": \"The Imperial Grand\",\n  \"city\": \"Bangalore\",\n  \"amenities\": [\"WiFi\", \"Pool\", \"Gym\", \"Restaurant\", \"Spa\"],\n  \"rating\": 5\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/hotels",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Hotel - No Token (401)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Unauth Hotel\",\n  \"city\": \"Delhi\",\n  \"rating\": 3\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/hotels",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels"]
             }
           }
         },
@@ -405,20 +343,12 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/hotels",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels"]
             }
           }
         },
@@ -427,67 +357,12 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/hotels/{{hotelId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "{{hotelId}}"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Hotel Invalid ID (400)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/hotels/invalid-id-format",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "invalid-id-format"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Hotel Not Found (404)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/hotels/507f1f77bcf86cd799439011",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "507f1f77bcf86cd799439011"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "{{hotelId}}"]
             }
           }
         },
@@ -496,14 +371,8 @@
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -511,14 +380,87 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/hotels/{{hotelId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "{{hotelId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "{{hotelId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Hotel - Admin (200)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels/{{hotelId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "{{hotelId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Hotel - Guest Forbidden (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Guest Hotel\",\n  \"city\": \"Goa\",\n  \"rating\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels"]
+            }
+          }
+        },
+        {
+          "name": "Create Hotel - No Token (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Unauth Hotel\",\n  \"city\": \"Delhi\",\n  \"rating\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels"]
+            }
+          }
+        },
+        {
+          "name": "Get Hotel Not Found (404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels/507f1f77bcf86cd799439011",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "507f1f77bcf86cd799439011"]
+            }
+          }
+        },
+        {
+          "name": "Get Hotel Invalid ID (400)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels/invalid-id-format",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "invalid-id-format"]
             }
           }
         }
@@ -529,17 +471,25 @@
       "item": [
         {
           "name": "Create Room Type - Admin (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data) {",
+                  "  pm.collectionVariables.set('roomTypeId', json.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -547,43 +497,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/room-types",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "room-types"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Room Type - Duplicate Name in Hotel (409)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"name\": \"Executive Suite\",\n  \"basePrice\": 5000,\n  \"totalRooms\": 2,\n  \"capacity\": 2\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/room-types",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "room-types"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types"]
             }
           }
         },
@@ -592,26 +507,13 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/room-types?hotelId={{hotelId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "room-types"
-              ],
-              "query": [
-                {
-                  "key": "hotelId",
-                  "value": "{{hotelId}}"
-                }
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types"],
+              "query": [{ "key": "hotelId", "value": "{{hotelId}}" }]
             }
           }
         },
@@ -620,21 +522,64 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/room-types/{{roomTypeId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "room-types",
-                "{{roomTypeId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types", "{{roomTypeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Room Type - Admin (200)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"basePrice\": 8000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/room-types/{{roomTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types", "{{roomTypeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Duplicate Room Type Name (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"name\": \"Executive Suite\",\n  \"basePrice\": 5000,\n  \"totalRooms\": 2,\n  \"capacity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/room-types",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types"]
+            }
+          }
+        },
+        {
+          "name": "Delete Room Type - Admin (200)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/room-types/{{roomTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "room-types", "{{roomTypeId}}"]
             }
           }
         }
@@ -645,17 +590,25 @@
       "item": [
         {
           "name": "Create Physical Room - Admin (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data) {",
+                  "  pm.collectionVariables.set('roomId', json.data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -663,43 +616,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Physical Room - Guest Forbidden (403)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"roomNumber\": \"999\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/rooms",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"]
             }
           }
         },
@@ -708,26 +626,13 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/rooms?roomTypeId={{roomTypeId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms"
-              ],
-              "query": [
-                {
-                  "key": "roomTypeId",
-                  "value": "{{roomTypeId}}"
-                }
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"],
+              "query": [{ "key": "roomTypeId", "value": "{{roomTypeId}}" }]
             }
           }
         },
@@ -736,128 +641,123 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Room - Admin (200)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"housekeepingStatus\": \"DIRTY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Room - Admin (200)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms/{{roomId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Room - Guest Forbidden (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"roomNumber\": \"999\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms"]
             }
           }
         }
       ]
     },
     {
-      "name": "5. Availability",
+      "name": "5. Availability Search",
       "item": [
         {
-          "name": "Search Available Rooms - Valid (200)",
+          "name": "Search Available Rooms (200)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/hotels/search?checkIn=2026-12-10&checkOut=2026-12-15&guests=2",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "search"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "search"],
               "query": [
-                {
-                  "key": "checkIn",
-                  "value": "2026-12-10"
-                },
-                {
-                  "key": "checkOut",
-                  "value": "2026-12-15"
-                },
-                {
-                  "key": "guests",
-                  "value": "2"
-                }
+                { "key": "checkIn", "value": "2026-12-10" },
+                { "key": "checkOut", "value": "2026-12-15" },
+                { "key": "guests", "value": "2" }
               ]
             }
           }
         },
         {
-          "name": "Search Date Ordering Error (400)",
+          "name": "Search by City (200)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/hotels/search?checkIn=2026-12-15&checkOut=2026-12-10&guests=2",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "search"
-              ],
+              "raw": "{{baseUrl}}/api/hotels/search?checkIn=2026-12-10&checkOut=2026-12-15&guests=2&city=Bangalore",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "search"],
               "query": [
-                {
-                  "key": "checkIn",
-                  "value": "2026-12-15"
-                },
-                {
-                  "key": "checkOut",
-                  "value": "2026-12-10"
-                },
-                {
-                  "key": "guests",
-                  "value": "2"
-                }
+                { "key": "checkIn", "value": "2026-12-10" },
+                { "key": "checkOut", "value": "2026-12-15" },
+                { "key": "guests", "value": "2" },
+                { "key": "city", "value": "Bangalore" }
               ]
             }
           }
         },
         {
-          "name": "Search Missing Parameters (400)",
+          "name": "Search No Auth (401)",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
             "url": {
-              "raw": "{{baseUrl}}/api/hotels/search?checkIn=2026-12-10",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "hotels",
-                "search"
-              ],
+              "raw": "{{baseUrl}}/api/hotels/search?checkIn=2026-12-10&checkOut=2026-12-15&guests=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels", "search"],
               "query": [
-                {
-                  "key": "checkIn",
-                  "value": "2026-12-10"
-                }
+                { "key": "checkIn", "value": "2026-12-10" },
+                { "key": "checkOut", "value": "2026-12-15" },
+                { "key": "guests", "value": "2" }
               ]
             }
           }
@@ -869,17 +769,25 @@
       "item": [
         {
           "name": "Create Reservation Booking (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data && json.data.booking) {",
+                  "  pm.collectionVariables.set('bookingId', json.data.booking._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -887,43 +795,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Booking Capacity Exceeded (400)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"checkIn\": \"2026-12-10\",\n  \"checkOut\": \"2026-12-14\",\n  \"guests\": 10\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings"]
             }
           }
         },
@@ -932,170 +805,79 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}"]
             }
           }
         },
         {
-          "name": "Get Booking Details - Cross Guest Forbidden (403)",
+          "name": "Get Booking - Staff (200)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guest2Token}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Booking Capacity Exceeded (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"checkIn\": \"2026-12-10\",\n  \"checkOut\": \"2026-12-14\",\n  \"guests\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "Get Booking - Cross Guest Forbidden (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{guest2Token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}"]
             }
           }
         }
       ]
     },
     {
-      "name": "7. Pricing",
-      "item": [
-        {
-          "name": "Create Pricing Rule - Admin (201)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"New Year Holiday\",\n  \"startDate\": \"2026-12-28\",\n  \"endDate\": \"2027-01-05\",\n  \"multiplier\": 1.5\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/pricing-rules",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "pricing-rules"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Pricing Rules - Staff (200)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/pricing-rules?roomTypeId={{roomTypeId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "pricing-rules"
-              ],
-              "query": [
-                {
-                  "key": "roomTypeId",
-                  "value": "{{roomTypeId}}"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Pricing Rule - Guest Forbidden (403)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"Fake Discount\",\n  \"startDate\": \"2026-12-01\",\n  \"endDate\": \"2026-12-31\",\n  \"multiplier\": 0.5\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/pricing-rules",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "pricing-rules"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "8. Check-in / Check-out",
+      "name": "7. Booking Lifecycle",
       "item": [
         {
           "name": "Confirm Booking - Staff (200)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/confirm",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "confirm"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "confirm"]
             }
           }
         },
@@ -1104,26 +886,13 @@
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/checkin",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "checkin"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "checkin"]
             }
           }
         },
@@ -1132,54 +901,13 @@
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/checkout",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "checkout"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Invalid Transition Check-In from Reserved (400)",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/checkin",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "checkin"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "checkout"]
             }
           }
         },
@@ -1188,26 +916,63 @@
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/checkin",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "checkin"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "checkin"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Cancellation",
+      "item": [
+        {
+          "name": "Cancel Booking >48h (200 - Full Refund)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Repeated Cancel - Already Cancelled (400)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Cross-Guest Cancel Forbidden (403)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guest2Token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "cancel"]
             }
           }
         }
@@ -1217,18 +982,12 @@
       "name": "9. Housekeeping",
       "item": [
         {
-          "name": "Update Housekeeping to DIRTY (200)",
+          "name": "Update to DIRTY - Staff (200)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -1236,31 +995,18 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}",
-                "housekeeping"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "housekeeping"]
             }
           }
         },
         {
-          "name": "Update Housekeeping to MAINTENANCE (200)",
+          "name": "Update to MAINTENANCE - Admin (200)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -1268,31 +1014,18 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}",
-                "housekeeping"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "housekeeping"]
             }
           }
         },
         {
-          "name": "Update Housekeeping to CLEAN (200)",
+          "name": "Update to CLEAN - Staff (200)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -1300,31 +1033,18 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}",
-                "housekeeping"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "housekeeping"]
             }
           }
         },
         {
-          "name": "Update Housekeeping Invalid Status (400)",
+          "name": "Invalid Status (400)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -1332,31 +1052,18 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}",
-                "housekeeping"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "housekeeping"]
             }
           }
         },
         {
-          "name": "Update Housekeeping Guest Forbidden (403)",
+          "name": "Guest Forbidden (403)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "body": {
               "mode": "raw",
@@ -1364,104 +1071,113 @@
             },
             "url": {
               "raw": "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "rooms",
-                "{{roomId}}",
-                "housekeeping"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rooms", "{{roomId}}", "housekeeping"]
             }
           }
         }
       ]
     },
     {
-      "name": "10. Cancellation",
+      "name": "10. Pricing Rules",
       "item": [
         {
-          "name": "Cancel Booking >48h (100% Refund - 200)",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
+          "name": "Create Pricing Rule - Admin (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.success && json.data) {",
+                  "  pm.collectionVariables.set('ruleId', json.data._id);",
+                  "}"
+                ]
               }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"New Year Holiday\",\n  \"startDate\": \"2026-12-28\",\n  \"endDate\": \"2027-01-05\",\n  \"multiplier\": 1.5\n}"
+            },
             "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "cancel"
-              ]
+              "raw": "{{baseUrl}}/api/pricing-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-rules"]
             }
           }
         },
         {
-          "name": "Repeated Cancellation Error (400)",
+          "name": "Get Pricing Rules - Staff (200)",
           "request": {
-            "method": "PUT",
+            "method": "GET",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "cancel"
-              ]
+              "raw": "{{baseUrl}}/api/pricing-rules?roomTypeId={{roomTypeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-rules"],
+              "query": [{ "key": "roomTypeId", "value": "{{roomTypeId}}" }]
             }
           }
         },
         {
-          "name": "Cross-Guest Cancel Forbidden (403)",
+          "name": "Update Pricing Rule - Admin (200)",
           "request": {
             "method": "PUT",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guest2Token}}"
-              }
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"multiplier\": 2.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-rules/{{ruleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-rules", "{{ruleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Pricing Rule - Admin (200)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "cancel"
-              ]
+              "raw": "{{baseUrl}}/api/pricing-rules/{{ruleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-rules", "{{ruleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Rule - Guest Forbidden (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"Fake Discount\",\n  \"startDate\": \"2026-12-01\",\n  \"endDate\": \"2026-12-31\",\n  \"multiplier\": 0.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing-rules",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pricing-rules"]
             }
           }
         }
@@ -1475,46 +1191,12 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/guests/{{guestId}}/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "guests",
-                "{{guestId}}",
-                "bookings"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Cross-Guest History Forbidden (403)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guest2Token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/guests/{{guestId}}/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "guests",
-                "{{guestId}}",
-                "bookings"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "guests", "{{guestId}}", "bookings"]
             }
           }
         },
@@ -1523,22 +1205,26 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/guests/{{guestId}}/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "guests",
-                "{{guestId}}",
-                "bookings"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "guests", "{{guestId}}", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "Cross-Guest History Forbidden (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{guest2Token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/guests/{{guestId}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "guests", "{{guestId}}", "bookings"]
             }
           }
         }
@@ -1552,46 +1238,12 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/invoice",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "invoice"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Cross-Guest Invoice Forbidden (403)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guest2Token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/invoice",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "invoice"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "invoice"]
             }
           }
         },
@@ -1600,22 +1252,26 @@
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/invoice",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{bookingId}}",
-                "invoice"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "invoice"]
+            }
+          }
+        },
+        {
+          "name": "Cross-Guest Invoice Forbidden (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{guest2Token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/invoice",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookings", "{{bookingId}}", "invoice"]
             }
           }
         }
@@ -1625,134 +1281,59 @@
       "name": "13. Reports",
       "item": [
         {
-          "name": "Get Global Occupancy Report - Admin (200)",
+          "name": "Global Occupancy Report - Admin (200)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/admin/reports/occupancy",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "reports",
-                "occupancy"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "reports", "occupancy"]
             }
           }
         },
         {
-          "name": "Filter Occupancy Report by Hotel - Admin (200)",
+          "name": "Filter by Hotel - Admin (200)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/admin/reports/occupancy?hotelId={{hotelId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "reports",
-                "occupancy"
-              ],
-              "query": [
-                {
-                  "key": "hotelId",
-                  "value": "{{hotelId}}"
-                }
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "reports", "occupancy"],
+              "query": [{ "key": "hotelId", "value": "{{hotelId}}" }]
             }
           }
         },
         {
-          "name": "Occupancy Report - Guest Forbidden (403)",
+          "name": "Report - Guest Forbidden (403)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{guestToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/admin/reports/occupancy",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "reports",
-                "occupancy"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "reports", "occupancy"]
             }
           }
         },
         {
-          "name": "Occupancy Report - Staff Forbidden (403)",
+          "name": "Report - Staff Forbidden (403)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{staffToken}}"
-              }
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
             ],
             "url": {
               "raw": "{{baseUrl}}/api/admin/reports/occupancy",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "reports",
-                "occupancy"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Occupancy Report - Invalid Hotel ID (400)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{adminToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/admin/reports/occupancy?hotelId=bad-id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "admin",
-                "reports",
-                "occupancy"
-              ],
-              "query": [
-                {
-                  "key": "hotelId",
-                  "value": "bad-id"
-                }
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "reports", "occupancy"]
             }
           }
         }

@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pricing-rules"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{guestToken}}
+body:
+  type: text
+  content: |-
+    {
+      "roomTypeId": "{{roomTypeId}}",
+      "season": "Fake Discount",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-31",
+      "multiplier": 0.5
+    }
+order: 3000

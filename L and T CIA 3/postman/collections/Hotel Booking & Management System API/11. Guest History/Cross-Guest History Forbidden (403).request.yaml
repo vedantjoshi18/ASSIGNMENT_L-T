@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/guests/{{guestId}}/bookings"
+method: GET
+headers:
+  Authorization: Bearer {{guest2Token}}
+order: 2000

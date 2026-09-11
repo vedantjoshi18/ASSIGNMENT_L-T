@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels/{{hotelId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+body:
+  type: text
+  content: |-
+    {
+      "rating": 4
+    }
+order: 8000

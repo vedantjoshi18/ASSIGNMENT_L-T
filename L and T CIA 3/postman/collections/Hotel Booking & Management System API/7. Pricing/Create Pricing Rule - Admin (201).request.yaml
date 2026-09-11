@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pricing-rules"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+body:
+  type: text
+  content: |-
+    {
+      "roomTypeId": "{{roomTypeId}}",
+      "season": "New Year Holiday",
+      "startDate": "2026-12-28",
+      "endDate": "2027-01-05",
+      "multiplier": 1.5
+    }
+order: 1000

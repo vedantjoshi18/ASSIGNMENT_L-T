@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Unauth Hotel",
+      "city": "Delhi",
+      "rating": 3
+    }
+order: 3000

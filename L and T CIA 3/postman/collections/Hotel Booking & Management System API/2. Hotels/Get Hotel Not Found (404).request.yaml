@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels/507f1f77bcf86cd799439011"
+method: GET
+headers:
+  Authorization: Bearer {{guestToken}}
+order: 7000

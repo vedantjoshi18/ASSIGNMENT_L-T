@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/pricing-rules?roomTypeId={{roomTypeId}}"
+method: GET
+headers:
+  Authorization: Bearer {{staffToken}}
+queryParams:
+  roomTypeId: "{{roomTypeId}}"
+order: 2000

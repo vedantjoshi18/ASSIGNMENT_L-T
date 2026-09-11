@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/bookings/{{bookingId}}/checkin"
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{guestToken}}
+order: 5000

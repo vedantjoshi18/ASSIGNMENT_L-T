@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/room-types"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+body:
+  type: text
+  content: |-
+    {
+      "hotelId": "{{hotelId}}",
+      "name": "Executive Suite",
+      "basePrice": 7500,
+      "totalRooms": 5,
+      "capacity": 3
+    }
+order: 1000

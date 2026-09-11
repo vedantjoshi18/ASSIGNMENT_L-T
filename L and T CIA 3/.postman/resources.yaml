@@ -1,0 +1,11 @@
+# Use this workspace to collaborate
+workspace:
+  id: ebd25831-bb2b-45fe-86af-626da2e90ca1
+
+localResources:
+  collections:
+    - ../Hotel_Booking_System.postman_collection.json
+
+cloudResources:
+  collections:
+    ../postman/collections/Hotel Booking & Management System API: 18184a14-a349-416d-9b32-3d7e26f069dd

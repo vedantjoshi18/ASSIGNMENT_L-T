@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels/invalid-id-format"
+method: GET
+headers:
+  Authorization: Bearer {{guestToken}}
+order: 6000

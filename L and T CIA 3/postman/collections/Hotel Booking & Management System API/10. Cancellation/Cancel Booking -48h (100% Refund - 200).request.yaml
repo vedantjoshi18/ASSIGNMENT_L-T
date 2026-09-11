@@ -1,0 +1,8 @@
+$kind: http-request
+name: Cancel Booking >48h (100% Refund - 200)
+url: "{{baseUrl}}/api/bookings/{{bookingId}}/cancel"
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{guestToken}}
+order: 1000

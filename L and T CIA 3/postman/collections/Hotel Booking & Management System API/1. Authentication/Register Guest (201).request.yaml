@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/register"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "John Guest",
+      "email": "guest@hotel.com",
+      "password": "guestPassword123",
+      "role": "guest"
+    }
+order: 3000

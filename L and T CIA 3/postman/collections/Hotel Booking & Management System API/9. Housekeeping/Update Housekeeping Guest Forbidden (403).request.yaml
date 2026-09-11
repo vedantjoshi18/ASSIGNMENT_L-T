@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/rooms/{{roomId}}/housekeeping"
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{guestToken}}
+body:
+  type: text
+  content: |-
+    {
+      "housekeepingStatus": "CLEAN"
+    }
+order: 5000

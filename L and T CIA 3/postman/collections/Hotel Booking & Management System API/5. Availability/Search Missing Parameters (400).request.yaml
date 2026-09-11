@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels/search?checkIn=2026-12-10"
+method: GET
+headers:
+  Authorization: Bearer {{guestToken}}
+queryParams:
+  checkIn: 2026-12-10
+order: 3000

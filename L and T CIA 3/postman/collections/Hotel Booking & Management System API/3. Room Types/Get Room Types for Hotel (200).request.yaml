@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/room-types?hotelId={{hotelId}}"
+method: GET
+headers:
+  Authorization: Bearer {{guestToken}}
+queryParams:
+  hotelId: "{{hotelId}}"
+order: 3000

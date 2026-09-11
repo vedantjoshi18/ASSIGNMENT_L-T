@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/admin/reports/occupancy?hotelId=bad-id"
+method: GET
+headers:
+  Authorization: Bearer {{adminToken}}
+queryParams:
+  hotelId: bad-id
+order: 5000

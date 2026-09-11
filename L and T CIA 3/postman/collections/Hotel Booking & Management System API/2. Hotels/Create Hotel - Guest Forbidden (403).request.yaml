@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{guestToken}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Guest Hotel",
+      "city": "Goa",
+      "rating": 4
+    }
+order: 2000

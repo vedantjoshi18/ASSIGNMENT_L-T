@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/rooms"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+body:
+  type: text
+  content: |-
+    {
+      "roomTypeId": "{{roomTypeId}}",
+      "roomNumber": "201",
+      "housekeepingStatus": "CLEAN"
+    }
+order: 1000

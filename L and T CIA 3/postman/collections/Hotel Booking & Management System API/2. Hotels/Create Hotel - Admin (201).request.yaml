@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hotels"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{adminToken}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "The Imperial Grand",
+      "city": "Bangalore",
+      "amenities": [
+        "WiFi",
+        "Pool",
+        "Gym",
+        "Restaurant",
+        "Spa"
+      ],
+      "rating": 5
+    }
+order: 1000
